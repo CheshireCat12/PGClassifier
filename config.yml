@@ -1,0 +1,23 @@
+root_model: ./model
+data:
+  root_data: ./data
+  dataset: cifar10
+  train_batch_size: 128
+  val_batch_size: 1024
+  new_img_size: 8
+training:
+  optimizer:
+    lr: 0.1
+    weight_decay: 0.0005
+    momentum: 0.9
+  scheduler:
+    milestones:
+      - 60
+      - 120
+      - 160
+    gamma: 0.2
+net:
+  layers:
+    - 2
+  img_size: 8
+  block: ResidualBlock
