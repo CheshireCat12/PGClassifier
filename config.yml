@@ -1,4 +1,6 @@
 root_model: ./model
+trainer:
+  epochs: 100
 data:
   root_data: ./data
   dataset: cifar10

@@ -11,11 +11,11 @@ from network import ResNet
 
 class TrainNet(pl.LightningModule):
 
-    def __init__(self, cfg: Dict[str], net: nn.Module) -> None:
+    def __init__(self, cfg) -> None:
         super(TrainNet, self).__init__()
         self.cfg = cfg
         self.dataset = DatasetFactory(cfg)
-        self.net = net
+        self.net = ResNet(cfg, **cfg.net)
 
         self.loss_fn = nn.CrossEntropyLoss()
 

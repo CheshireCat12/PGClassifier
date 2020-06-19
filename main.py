@@ -8,8 +8,9 @@ from torchvision import transforms
 from tqdm import tqdm
 
 from network import ResNet
+from train import TrainNet
 
-# import pytorch_lightning as pl
+import pytorch_lightning as pl
 # from dataset import MNIST
 # from network import Net, ResidualBlock
 # from pytorch_lightning import Trainer, loggers
@@ -34,21 +35,19 @@ def get_config(config_file: str = './config.yml') -> edict:
 
 def main():
     cfg = get_config()
+    trainer = pl.Trainer(gpus=1, max_epochs=cfg.trainer.max_epochs)
 
     for i in range(1, 5):
-        net = ResNet(cfg, **cfg.net)
+        model = TrainNet(cfg)
+        trainer.fit(model)
 
-        ######
-        # Train
-        ######
         filename = f'save_{cfg.net.img_size}X{cfg.net.img_size}.pth'
-        torch.save(net.state_dict(),
+        torch.save(model.net.state_dict(),
                    os.path.join(cfg.root_model, filename))
 
         cfg.net.layers.extend([2])
         cfg.net.img_size *= 2
-
-    print(cfg)
+        cfg.data.new_img_size = cfg.net.img_size
 
 
 if __name__ == '__main__':
